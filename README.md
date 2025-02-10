@@ -37,6 +37,3 @@ Usuario registrado: mfabian440@hotmail.com
 Contrasena: 1234
 
 Se pueden agregar mas roles dependiendo de las necesidades pero para este proyecto solo se utilizaron dos.
-
-
-mfa
