@@ -1,0 +1,66 @@
+﻿@page "/control-usuario"
+@attribute [Authorize(Roles = "Administrador")]
+
+@using Data.Modelos.Dto
+@using Services
+
+@inject UsuarioService usuarioServ
+@inject IJSRuntime JSRuntime
+
+<h3>Control de usuarios</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var usuario in listaUsuario){
+            <tr>
+                <td>@usuario.Id_Usu</td>
+                <td>@usuario.NombreCompleto</td>
+                <td>@usuario.Correo</td>
+                <td>@usuario.Rol</td>
+                <td>
+                    <button class="btn btn-warning btn-sm">Cambiar Rol</button>
+                    <button class="btn btn-danger btn-sm" @onclick="@(() => EliminaUsuario(usuario.Id_Usu))">Eliminar</button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+@code {
+    private List<ControlUsuarioDto> listaUsuario { get; set; } = new List<ControlUsuarioDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaUsuario = await usuarioServ.ObtenListaUsuario();
+    }
+
+    private async Task EliminaUsuario(int IdUsuario)
+    {
+        var respuesta = await usuarioServ.EliminaUsuario(IdUsuario);
+        if (respuesta.isSuccess)
+        {
+            listaUsuario.RemoveAll(u => u.Id_Usu == IdUsuario);
+            await JSRuntime.InvokeVoidAsync("ShowSwal", "success", "Se elimino el usuario!");
+            StateHasChanged();
+        }
+        else if (respuesta.isSuccess == false && respuesta.Id == 0)
+        {
+            await JSRuntime.InvokeVoidAsync("ShowSwal", "warning", "No se pudo eliminar el usuario");
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("ShowSwal", "error", "Ocurio un error al tratar de eliminar el usuario");
+        }
+    }
+}

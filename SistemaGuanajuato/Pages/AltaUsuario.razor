@@ -1,0 +1,126 @@
+﻿@page "/registro-usuario"
+
+@using Data.Modelos
+@using Data.Modelos.Dto
+@using Services
+
+@inject NavigationManager navMag
+@inject IJSRuntime JSRuntime
+@inject LogueoService logueoServ
+@inject CorreoService correoServ
+
+<h3>Registro</h3>
+
+<EditForm Model="registro" OnValidSubmit="RegistroNuevo">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Nombres:</label>
+        <InputText class="form-control text-uppercase" @bind-Value="registro.Nombres" />
+        <ValidationMessage For="(()=>registro.Nombres)" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Apellido paterno:</label>
+        <InputText class="form-control text-uppercase" @bind-Value="registro.ApellidoPaterno" />
+        <ValidationMessage For="(()=>registro.ApellidoPaterno)" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Apellido materno:</label>
+        <InputText class="form-control text-uppercase" @bind-Value="registro.ApellidoMaterno" />
+        <ValidationMessage For="(()=>registro.ApellidoMaterno)" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Fecha de nacimiento:</label>
+        <InputDate class="form-control" @bind-Value="registro.FechaNacimiento" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Estado nacimiento:</label>
+        <InputSelect class="form-control text-uppercase" @bind-Value="registro.EstadoNacimiento">
+            <option value="-1">--Seleccione un estado</option>
+            @foreach (var estado in listaEstados)
+            {
+                <option value="@estado.Codigo">@estado.Estado</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">CURP:</label>
+        <InputText class="form-control text-uppercase" @bind-Value="registro.CURP" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Correo:</label>
+        <InputText class="form-control" @bind-Value="registro.Correo" />
+        <ValidationMessage For="@(() => registro.Correo)" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Contraseña:</label>
+        <InputText type="password" class="form-control" @bind-Value="registro.Contrasena" placeholder="Escriba su contraseña" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label text-uppercase">Valide la contraseña:</label>
+        <InputText type="password" class="form-control" @bind-Value="Contrasena2" placeholder="Escriba su contraseña" />
+    </div>
+    <button class="btn btn-success align-content-center" type="submit">GUARDAR</button>
+</EditForm>
+
+@code {
+    private RegistroDto registro { get; set; } = new RegistroDto();
+    private List<EstadoRegistro> listaEstados { get; set; } = new List<EstadoRegistro>();
+    private string Contrasena2 { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaEstados = await logueoServ.EstadosMexico();
+    }
+
+    private async Task RegistroNuevo() {
+
+        if(registro.Contrasena == Contrasena2 || registro.EstadoNacimiento == "-1"){
+
+            string DestinatarioNombre = registro.Nombres + " " + registro.ApellidoPaterno + " " + registro.ApellidoMaterno;
+
+            (bool correoBool, var correoInt) = await correoServ.EnviarCorreoAsync(registro.Correo, DestinatarioNombre);
+
+            if(correoBool)
+            {
+                registro.Codigo = correoInt;
+                var respuesta = await logueoServ.RegistroUsuario(registro);
+                if (respuesta.isSuccess)
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowSwal", "success", "Registro Exitoso! Valida tu cuenta");
+                    navMag.NavigateTo($"validacion-correo?IdEnvio={respuesta.Id}");
+                }
+                else if (respuesta.isSuccess == false && respuesta.Id == 0)
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowSwal", "warning", "El usuario ya existe!");
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowSwal", "error", "Ocurio un error al tratar de registrarlo");
+                }
+            }            
+        }else{
+            await JSRuntime.InvokeVoidAsync("ShowSwal", "warning", "La validacion de contraseñas no coincide");
+        }
+    }
+
+    private async Task OnImageSelected(ChangeEventArgs e)
+    {
+        byte[] imageBytes;
+        var file = e.Value as IBrowserFile;
+
+        if (file != null)
+        {
+            // Leer la imagen seleccionada como un arreglo de bytes
+            using (var stream = file.OpenReadStream())
+            {
+                var buffer = new byte[file.Size];
+                await stream.ReadAsync(buffer);
+                imageBytes = buffer;
+            }
+
+            // Convertir el arreglo de bytes a Base64 para mostrar la imagen en el navegador
+            string imageBase64 = $"data:{file.ContentType};base64,{Convert.ToBase64String(imageBytes)}";
+        }
+    }
+
+}

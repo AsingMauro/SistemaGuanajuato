@@ -1,0 +1,16 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<AuthorizeView>
+	<Authorized>
+		<p>Si esta logueado podras ver este mensaje</p>
+	</Authorized>
+	<NotAuthorized>
+		<h1>Bienvenido al sistema de Guanajuato!</h1>
+
+		<p>En este portal podras darte de alta y acceder a los recursos de la misma</p>
+
+		<SurveyPrompt Title="How is Blazor working for you?" />
+	</NotAuthorized>
+</AuthorizeView>

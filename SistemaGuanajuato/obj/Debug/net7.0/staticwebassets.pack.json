@@ -1,0 +1,93 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\SistemaGuanajuato.bundle.scp.css",
+      "PackagePath": "staticwebassets\\SistemaGuanajuato.zyekxesf39.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\img\\cargando.gif",
+      "PackagePath": "staticwebassets\\img\\cargando.gif"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\img\\usuario_base.svg",
+      "PackagePath": "staticwebassets\\img\\usuario_base.svg"
+    },
+    {
+      "Id": "C:\\Users\\Mauro\\Desktop\\SistemaGuanajuato\\SistemaGuanajuato\\wwwroot\\js\\common.js",
+      "PackagePath": "staticwebassets\\js\\common.js"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.SistemaGuanajuato.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.SistemaGuanajuato.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.SistemaGuanajuato.props",
+      "PackagePath": "build\\SistemaGuanajuato.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.SistemaGuanajuato.props",
+      "PackagePath": "buildMultiTargeting\\SistemaGuanajuato.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.SistemaGuanajuato.props",
+      "PackagePath": "buildTransitive\\SistemaGuanajuato.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

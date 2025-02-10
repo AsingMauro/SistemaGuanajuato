@@ -1,0 +1,22 @@
+﻿@using SistemaGuanajuato.Services
+
+@inject CustomAuthStateProvider autenticacion
+@inject NavigationManager navMag
+
+<AuthorizeView>
+    <Authorized>
+        <button @onclick="CerrarSesion" class="nav-link btn btn-link">Cerrar Sesion</button>
+    </Authorized>
+    <NotAuthorized>
+        <NavLink href="login">Ingresar</NavLink>
+        <NavLink href="registro-usuario">Registrar</NavLink>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code{
+    private async Task CerrarSesion(){
+        await autenticacion.Logout();
+        navMag.NavigateTo("/", true);
+    }
+}

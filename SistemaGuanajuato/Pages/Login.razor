@@ -1,0 +1,67 @@
+﻿@page "/login"
+
+@using Data.Modelos.Dto
+@using Microsoft.AspNetCore.Identity
+@using Services
+
+@inject NavigationManager navMag
+@inject LogueoService logueoServ
+@inject CustomAuthStateProvider autentica
+@inject IJSRuntime JSRuntime
+
+<h3>Iniciar Sesion</h3>
+
+<EditForm Model="login" OnValidSubmit="IniciaSesion">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div class="mb-3">
+        <label class="form-label">Correo:</label>
+        <InputText class="form-control" @bind-Value="login.Correo" />
+        <ValidationMessage For="(() => login.Correo)"></ValidationMessage>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Contraseña</label>
+        <input type="password" class="form-control" @bind="login.Contrasena" placeholder="Escriba su contraseña" />
+        <ValidationMessage For="(() => login.Contrasena)"></ValidationMessage>
+    </div>
+
+    <button class="btn btn-success" type="submit" disabled="@isLoading">
+        @(isLoading ? "Cargando..." : "Ingresar")
+    </button>
+
+    <!-- Imagen de carga -->
+    @if (isLoading)
+    {
+        <div class="text-center mt-3">
+            <img src="img/cargando.gif" width="50" height="50" alt="Cargando..." />
+        </div>
+    }
+</EditForm>
+
+
+@code {
+    private LoginDto login { get; set; } = new LoginDto();
+    private bool isLoading = false;
+
+
+    private async Task IniciaSesion()
+    {
+        isLoading = true;
+        StateHasChanged();
+
+        var autenticacion = await logueoServ.BusquedaLogueo(login);
+        if (autenticacion.Id_User != -1)
+        {
+            await autentica.Login(autenticacion);
+            navMag.NavigateTo("/", true);
+        }
+        else if (autenticacion.Id_User == 0){
+            await JSRuntime.InvokeVoidAsync("ShowSwal", "warning", "La cuenta no esta verificada");
+            navMag.NavigateTo("validacion-correo");
+        }else{
+            await JSRuntime.InvokeVoidAsync("ShowSwal", "error", "Ocurio un error inisiar sesion");
+        }
+        
+        isLoading = false;
+        StateHasChanged();
+    }
+}

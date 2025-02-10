@@ -1,0 +1,103 @@
+﻿@page "/mi-perfil"
+@attribute [Authorize(Roles = "Autenticado, Administrador")]
+
+@using Data.Modelos.Dto
+@using Services
+
+@inject UsuarioService usuarioServ
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navMag
+
+<h3>Mi perfil</h3>
+
+<p>En esta seccion podras editar tu informacion capturada</p>
+
+<EditForm Model="usuarioInfo" OnValidSubmit="ActualizaPerfil">
+	<DataAnnotationsValidator></DataAnnotationsValidator>
+	<img width="300" height="300" src="@base64Image" alt="@usuarioInfo.Nombre" style="border:1px" />
+	<br />
+	<InputFile class="form-control" OnChange="OnFileSelected" accept=".jpg,.jpeg,.png" />		
+
+	<div class="mb-3">
+		<label class="form-label text-uppercase">Nombres:</label>
+		<InputText class="form-control text-uppercase" @bind-Value="usuarioInfo.Nombre" />
+		<ValidationMessage For="(()=>usuarioInfo.Nombre)" />
+	</div>
+	<div class="mb-3">
+		<label class="form-label text-uppercase">Apellido paterno:</label>
+		<InputText class="form-control text-uppercase" @bind-Value="usuarioInfo.ApellidoPaterno" />
+		<ValidationMessage For="(()=>usuarioInfo.ApellidoPaterno)" />
+	</div>
+	<div class="mb-3">
+		<label class="form-label text-uppercase">Apellido materno:</label>
+		<InputText class="form-control text-uppercase" @bind-Value="usuarioInfo.ApellidoMaterno" />
+		<ValidationMessage For="(()=>usuarioInfo.ApellidoMaterno)" />
+	</div>
+	<button class="btn btn-success" type="submit">Actualizar</button>
+</EditForm>
+
+@code {
+	private UsuarioInfoDto usuarioInfo { get; set; } = new UsuarioInfoDto();
+	private string fileExtension;
+	private string base64Image { get; set; }
+	byte[] imageBytes = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		usuarioInfo = await usuarioServ.DatosUsuario();
+		if(usuarioInfo.Foto != null){
+			using var memoryStream = new MemoryStream();			
+			base64Image = $"data:image/{usuarioInfo.ExtensionFoto};base64,{Convert.ToBase64String(usuarioInfo.Foto)}";
+		}
+	}
+
+	private async Task ActualizaPerfil()
+	{
+		if(imageBytes != null){
+			usuarioInfo.Foto = imageBytes;
+			usuarioInfo.ExtensionFoto = fileExtension;
+		}
+		var respuesta = await usuarioServ.ActualizaRegistro(usuarioInfo);
+		if(respuesta.isSuccess){
+			await JSRuntime.InvokeVoidAsync("ShowSwal", "success", "Actualizacion existosa!");
+			navMag.NavigateTo("mi-perfil", true);
+		}else if(respuesta.isSuccess == false && respuesta.Id == 0){
+			await JSRuntime.InvokeVoidAsync("ShowSwal", "warning", "No se actualizo el perfil!");
+		}else{		
+			await JSRuntime.InvokeVoidAsync("ShowSwal", "error", "Ocurio un error al tratar de registrarlo");			
+		}
+	}
+
+	private async Task OnFileSelected(InputFileChangeEventArgs e)
+	{
+		var file = e.File;
+
+		if (file != null)
+		{
+			try
+			{
+				fileExtension = Path.GetExtension(file.Name).ToLower();
+
+				const long maxFileSize = 2 * 1024 * 1024; // 2MB
+				if (file.Size > maxFileSize)
+				{
+					Console.WriteLine("El archivo es demasiado grande.");
+					return;
+				}
+
+				using var memoryStream = new MemoryStream();
+				await file.OpenReadStream(maxAllowedSize: maxFileSize).CopyToAsync(memoryStream);
+				imageBytes = memoryStream.ToArray();
+				fileExtension = fileExtension.TrimStart('.');
+				base64Image = $"data:image/{fileExtension};base64,{Convert.ToBase64String(imageBytes)}";
+				StateHasChanged();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error al cargar la imagen: {ex.Message}");
+			}
+		}
+	}
+
+	
+}

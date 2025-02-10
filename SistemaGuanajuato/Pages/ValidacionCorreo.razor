@@ -1,0 +1,56 @@
+﻿@page "/validacion-correo"
+
+@using Data.Modelos
+@using Data.Modelos.Dto
+@using Services
+
+@inject NavigationManager navMag
+@inject LogueoService logueoService
+@inject IJSRuntime JSRuntime
+
+<h3>Validacion del correo</h3>
+
+<p>Hemos enviado un codigo a tu correo registrado</p>
+<p>Ingresa los cuatro numeros validar tu cuenta</p>
+
+<EditForm Model="validacion" OnValidSubmit="ValidarCorreo">
+	<DataAnnotationsValidator></DataAnnotationsValidator>
+	@if(IdEnvio == null){
+		<div class="mb-3">
+			<label class="form-label">Correo:</label>
+			<InputText class="form-control" @bind-Value="validacion.Correo" />
+			<ValidationMessage For="(() => validacion.Correo)"></ValidationMessage>
+		</div>
+	}
+	<div class="mb-3">
+		<label class="form-label">Codigo Enviado:</label>
+		<InputText class="form-control" @bind-Value="validacion.Codigo" />
+		<ValidationMessage For="(() => validacion.Codigo)"></ValidationMessage>
+	</div>
+	<button class="btn btn-primary" type="submit">Validar</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	[SupplyParameterFromQuery]
+	public int? IdEnvio { get; set; }	
+
+	private ValidacionDto validacion { get; set; } = new ValidacionDto();
+
+	private async Task ValidarCorreo(){
+
+		validacion.Id = IdEnvio;
+		var respuesta = await logueoService.ValidaCuenta(validacion);
+		if(respuesta.isSuccess){
+			await JSRuntime.InvokeVoidAsync("ShowSwal", "success", "Tu cuenta esta activa! Inicia sesion");
+			navMag.NavigateTo("login");
+		}
+		else if (respuesta.Id == 0 && respuesta.isSuccess == false){
+			await JSRuntime.InvokeVoidAsync("ShowSwal", "warning", "La cuenta ya esta activa o no ha sido registrada!");
+		}else{
+			await JSRuntime.InvokeVoidAsync("ShowSwal", "error", "Ocurrio un problema con la pagina");
+		}
+
+	}
+
+}
