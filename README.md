@@ -4,9 +4,9 @@ CRUD manejo de usuarios y roles en una plataforma, diseñado en Blazor Server C#
 
 # Estructura del proyecto / Carpetas
 
-- wwwroot => Recursos del lado del cliente puedes archivos js, css, paginaas html externas.
+- wwwroot => Recursos del lado del cliente puedes archivos js, css, paginas html externas.
 
-- Data => aque se incluye todo el modelado de nuestras tablas asi como diferentes Dto (data tranfer object) para que no hagamos uso de toda la tabla y exponer su seguridad (lo ideal es que manejemos todo esto en un API que este vinculada al proyecto y asi solo consumir los recursos de la base d datos).
+- Data => aqui se incluye todo el modelado de nuestras tablas asi como diferentes Dto (data tranfer object) para que no hagamos uso de toda la tabla y exponer su seguridad (lo ideal es que manejemos todo esto en un API que este vinculada al proyecto y asi solo consumir los recursos de la base d datos).
 
 - Page => contiene las vistas y codigo backend que se manejara del lado del cliente, al ser un proyecto diseñado en blazor podemos ejecutar codigo C# del lado del cliente, sin afectar a la expierencia del cliente, las paginas estan compuestas por atributos las cuales si un usuario no tiene la credencial o token, no se le permite el acceso.
 
@@ -37,3 +37,10 @@ Usuario registrado: mfabian440@hotmail.com
 Contrasena: 1234
 
 Se pueden agregar mas roles dependiendo de las necesidades pero para este proyecto solo se utilizaron dos.
+
+#Posibles errores
+
+- En el archivo appssettings compruebe que se esta utilizando la cadena de conexion correcta: Data Source=(Servidor);Initial Catalog=(Base de datos);User id=(Usuari);Password=(Contraseba);TrustServerCertificate=True;
+- El proyecto no cuenta con migraciones directas, se tiene que restaurar la base de datos directo de Microsoft Sql Server Management Studio o el Administrador de su preferencia.
+- Validar que visual estudio cuente con .NET 7, liga de descarga para 64 bits https://dotnet.microsoft.com/es-es/download/dotnet/thank-you/runtime-desktop-7.0.20-windows-x64-installer
+- En algunas maquinas el firewall de windows puede que bloquee el proyecto debido a los puertos que utiliza, generar una regla para que permita el uso a este proyecto.
